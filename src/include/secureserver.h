@@ -18,9 +18,9 @@ class SecureServer
 {
    public:
       static int isRoot();
-      static SSL_CTX *InitServerCTX(void);
-      //void LoadCertificates(SSL_CTX, char* CertFile, char* keyFile);
-      //void showCerts(SSL *ssl);
+      static SSL_CTX *initServerCTX(void);
+      static void loadCertificates(SSL_CTX *ctx, char* certFile, char* keyFile);
+      static void showCerts(SSL *ssl);
 };
 
 

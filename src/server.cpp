@@ -1,3 +1,4 @@
+#include <iostream>
 #include <stdio.h>
 #include <errno.h>
 #include <unistd.h>
@@ -10,11 +11,14 @@
 int main(int argc, char** argv)
 {
    SSL_CTX *ctx;
+   char certFile[] = "certs/mycert.pem";
+   char keyFile[] = "certs/mycert.pem";
 
    if(!SecureServer::isRoot())
    {
       printf("This program must be run as a root/sudo user!\n");
-   }
+   	exit(1);
+	}
 
    if(argc != 3)
    {
@@ -22,14 +26,27 @@ int main(int argc, char** argv)
       exit(1);
    }
 
+
+   SSL_library_init();
+   ctx = SecureServer::initServerCTX();
+   SecureServer::loadCertificates(ctx, certFile, keyFile);
+
+
    TCPStream* stream = NULL;
    TCPAcceptor* acceptor = NULL;
    acceptor = new TCPAcceptor(argv[1], atoi(argv[2]));
-   if(acceptor->start() == 0)
+   cout << "Server online" << endl;
+
+	if(acceptor->start() == 0)
    {
       while(1)
       {
          stream = acceptor->accept();
+         std::cout << "Connection: " << stream->getPeerIP() << ":" << stream->getPeerPort() << std::endl;
+         //SSL *ssl;
+         //ssl = SSL_new(ctx);
+         //SSL_set_fd(ssl, )
+
          if(stream != NULL)
          {
             ssize_t length;
@@ -48,6 +65,8 @@ int main(int argc, char** argv)
          }
       }
    }
+
    perror("Could not start the server\n");
+   SSL_CTX_free(ctx);
    exit(-1);
 }
