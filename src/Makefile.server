@@ -1,0 +1,19 @@
+CC = g++
+CFLAGS = -g -c -Wall
+LDFLAGS =
+SOURCES = server.cpp tcpstream.cpp tcpacceptor.cpp secureserver.cpp
+INCLUDES = -I. 
+LCRYPTO = -L/usr/lib -lssl -lcrypto
+OBJS = $(SOURCES:.cpp=.o)
+TARGET = server
+
+all: $(SOURCES) $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CC) $(LDFLAGS) $(OBJS) $(LCRYPTO) -o $@
+
+.cpp.o:
+	$(CC) $(CFLAGS) $(INCLUDES) $< -o $@
+
+clean:
+	rm -rf $(OBJS) $(TARGET)
