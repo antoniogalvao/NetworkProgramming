@@ -8,6 +8,9 @@
 #include "include/tcpacceptor.h"
 #include "include/secureserver.h"
 
+
+#define FAIL -1
+
 int main(int argc, char** argv)
 {
    SSL_CTX *ctx;
@@ -41,11 +44,16 @@ int main(int argc, char** argv)
    {
       while(1)
       {
+         SSL* ssl;
          stream = acceptor->accept();
          std::cout << "Connection: " << stream->getPeerIP() << ":" << stream->getPeerPort() << std::endl;
-         //SSL *ssl;
-         //ssl = SSL_new(ctx);
-         //SSL_set_fd(ssl, )
+         ssl = SSL_new(ctx);
+         SSL_set_fd(ssl, stream->getPeerSocketDescriptor());
+
+         if ( SSL_accept(ssl) == FAIL )     /* do SSL-protocol accept */
+            ERR_print_errors_fp(stderr);
+         else
+            SecureServer::showCerts(ssl);        /* get any certificates */
 
          if(stream != NULL)
          {

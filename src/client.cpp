@@ -1,7 +1,15 @@
+#include <iostream>
 #include <stdio.h>
-#include <stdlib.h>
+#include <errno.h>
+#include <unistd.h>
+#include <malloc.h>
 #include <string.h>
+#include <stdlib.h>
 #include "include/tcpconnector.h"
+#include "include/secureclient.h"
+
+#define FAIL -1
+
 
 using namespace std;
 
@@ -13,19 +21,34 @@ int main(int argc, char** argv)
   	   exit(1);
    }
 
+	SSL_CTX *ctx;
+	SSL *ssl;
    int length;
    string message;
    char line[256];
-   TCPConnector* connector = new TCPConnector;
+
+	SSL_library_init();
+	ctx = SecureClient::initCTX();
+
+	TCPConnector* connector = new TCPConnector;
    TCPStream* stream = connector->connect(argv[1], atoi(argv[2]));
    if(stream)
    {
-      message = "Hello World!!";
-      stream->send(message.c_str(), message.size());
-      printf("sent - %s\n", message.c_str());
-      length = stream->receive(line, sizeof(line));
-      line[length] = '\0';
-      printf("received - %s\n", line);
+		ssl = SSL_new(ctx);
+		SSL_set_fd(ssl, stream->getPeerSocketDescriptor());
+		if( SSL_connect(ssl) == FAIL)
+			ERR_print_errors_fp(stderr);
+		else
+		{
+			printf("Connected with %s encryption", SSL_get_cipher(ssl));
+			SecureClient::showCerts(ssl);
+      	message = "Hello World!!";
+      	stream->send(message.c_str(), message.size());
+      	printf("sent - %s\n", message.c_str());
+      	length = stream->receive(line, sizeof(line));
+      	line[length] = '\0';
+      	printf("received - %s\n", line);
+		}
       delete stream;
    }
    exit(0);

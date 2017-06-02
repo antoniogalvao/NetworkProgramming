@@ -1,5 +1,5 @@
-#ifndef SECURE_SERVER_H
-#define SECURE_SERVER_H
+#ifndef SECURE_CLIENT_H
+#define SECURE_CLIENT_H
 
 
 #include <errno.h>
@@ -14,15 +14,13 @@
 #include "openssl/ssl.h"
 #include "openssl/err.h"
 
-class SecureServer
+
+class SecureClient
 {
    public:
-      static int isRoot();
-      static SSL_CTX *initServerCTX(void);
-      static void loadCertificates(SSL_CTX *ctx, char* certFile, char* keyFile);
+      static SSL_CTX *initCTX(void);
       static void showCerts(SSL *ssl);
 };
-
 
 
 #endif

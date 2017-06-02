@@ -10,7 +10,7 @@ using namespace std;
 
 class TCPStream
 {
-   int m_socketDescriptor;
+   int m_peerSocketDescriptor;
    string m_peerIP;
    int m_peerPort;
 
@@ -25,7 +25,7 @@ class TCPStream
 
       string getPeerIP();
       int getPeerPort();
-
+      int getPeerSocketDescriptor();
    private:
       TCPStream(int sd, struct sockaddr_in* address);
       TCPStream();
