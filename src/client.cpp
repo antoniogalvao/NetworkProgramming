@@ -42,12 +42,14 @@ int main(int argc, char** argv)
 		{
 			printf("Connected with %s encryption", SSL_get_cipher(ssl));
 			SecureClient::showCerts(ssl);
-      	message = "Hello World!!";
-      	stream->send(message.c_str(), message.size());
-      	printf("sent - %s\n", message.c_str());
-      	length = stream->receive(line, sizeof(line));
-      	line[length] = '\0';
-      	printf("received - %s\n", line);
+			while(true) {
+      		std::cin >> message;
+      		stream->send(message.c_str(), message.size());
+      		printf("sent - %s\n", message.c_str());
+      		length = stream->receive(line, sizeof(line));
+      		line[length] = '\0';
+      		printf("received - %s\n", line);
+			}
 		}
       delete stream;
    }
