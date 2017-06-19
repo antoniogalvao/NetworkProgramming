@@ -1,4 +1,4 @@
-#include <thread.h>
+#include <include/thread.h>
 
 static void* runThread(void *arg)
 {

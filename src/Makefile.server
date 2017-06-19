@@ -1,16 +1,17 @@
 CC = g++
 CFLAGS = -g -c -Wall
 LDFLAGS =
-SOURCES = server.cpp tcpstream.cpp tcpacceptor.cpp secureserver.cpp
+SOURCES = server.cpp tcpstream.cpp tcpacceptor.cpp secureserver.cpp thread.cpp
 INCLUDES = -I. 
 LCRYPTO = -L/usr/lib -lssl -lcrypto
+LPTHREAD = -lpthread
 OBJS = $(SOURCES:.cpp=.o)
 TARGET = server
 
 all: $(SOURCES) $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CC) $(LDFLAGS) $(OBJS) $(LCRYPTO) -o $@
+	$(CC) $(LDFLAGS) $(OBJS) $(LCRYPTO) $(LPTHREAD) -o $@
 
 .cpp.o:
 	$(CC) $(CFLAGS) $(INCLUDES) $< -o $@
