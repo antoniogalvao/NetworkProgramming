@@ -14,12 +14,12 @@ TCPStream::~TCPStream()
    close(m_peerSocketDescriptor);
 }
 
-ssize_t TCPStream::send(const char* buffer, size_t lenght)
+ssize_t TCPStream::sendMessage(const char* buffer, size_t lenght)
 {
    return write(m_peerSocketDescriptor, buffer, lenght);
 }
 
-ssize_t TCPStream::receive(char* buffer, size_t length)
+ssize_t TCPStream::receiveMessage(char* buffer, size_t length)
 {
    return read(m_peerSocketDescriptor, buffer, length);
 }

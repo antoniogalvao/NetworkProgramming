@@ -43,7 +43,7 @@ public:
 
          ssize_t length;
          char line[256];
-         while ((length = stream->receive(line, sizeof(line))) > 0)
+         while ((length = stream->receiveMessage(line, sizeof(line))) > 0)
          {
             line[length] = 0;
             printf("received - %s\n", line);
@@ -51,7 +51,7 @@ public:
             {
                line[i] = toupper(line[i]);
             }
-            stream->send(line, length);
+            stream->sendMessage(line, length);
          }
          delete stream;
       }

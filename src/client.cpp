@@ -24,7 +24,7 @@ int main(int argc, char** argv)
 	SSL_CTX *ctx;
 	SSL *ssl;
    int length;
-   string message;
+   char message[256];
    char line[256];
 
 	SSL_library_init();
@@ -42,14 +42,45 @@ int main(int argc, char** argv)
 		{
 			printf("Connected with %s encryption", SSL_get_cipher(ssl));
 			SecureClient::showCerts(ssl);
-			while(true) {
+			/*while(true) {
       		std::cin >> message;
-      		stream->send(message.c_str(), message.size());
-      		printf("sent - %s\n", message.c_str());
-      		length = stream->receive(line, sizeof(line));
+				std::cout << message << endl;
+				//std::cout << message.c_str() << endl;
+				stream->sendMessage(message, 256);
+      		printf("sent - %s\n", message);
+      		length = stream->receiveMessage(line, sizeof(line));
       		line[length] = '\0';
       		printf("received - %s\n", line);
-			}
+			}*/
+			while(1)
+			{
+    	    	cout << ">";
+        		string data;
+       			getline(cin, data);
+       			memset(&message, 0, sizeof(message));//clear the buffer
+       			strcpy(message, data.c_str());
+        /*if(data == "exit")
+        {
+            send(clientSd, (char*)&msg, strlen(msg), 0);
+            break;
+        }*/
+        //bytesWritten += send(clientSd, (char*)&msg, strlen(msg), 0);
+            	stream->sendMessage(message, 256);
+            	printf("sent - %s\n", message);
+				 cout << "Awaiting server response..." << endl;
+        		memset(&message, 0, sizeof(message));//clear the buffer
+        		//bytesRead += recv(clientSd, (char*)&msg, sizeof(msg), 0);
+        		length = stream->receiveMessage(line, sizeof(line));
+        		line[length] = '\0';
+      			printf("received - %s\n", line);
+      		}
+        /*if(!strcmp(msg, "exit"))
+        {
+            cout << "Server has quit the session" << endl;
+            break;
+        }
+        cout << "Server: " << msg << endl;
+    }*/
 		}
       delete stream;
    }
