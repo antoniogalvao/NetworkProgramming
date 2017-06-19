@@ -46,12 +46,18 @@ public:
          while ((length = stream->receiveMessage(line, sizeof(line))) > 0)
          {
             line[length] = 0;
-            printf("received - %s\n", line);
+            char peerPortString[10];
+            sprintf(peerPortString, "%d",stream->getPeerPort());
+            printf("%s - %s\n", peerPortString, line);
             for(unsigned i = 0; i < sizeof(line); i++)
             {
                line[i] = toupper(line[i]);
             }
-            stream->sendMessage(line, length);
+            char serverResponseMessage[512];
+            strcat(serverResponseMessage, peerPortString);
+            strcat(serverResponseMessage, " - ");
+            strcat(serverResponseMessage, line);
+            stream->sendMessage(serverResponseMessage, length);
          }
          delete stream;
       }
