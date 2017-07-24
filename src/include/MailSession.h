@@ -1,9 +1,9 @@
 #ifndef _MAIL_SESSION_INCLUDED_
 #define _MAIL_SESSION_INCLUDED_
 
-#include "../MailAddress.h"
+#include "MailAddress.h"
 
-#include <Winsock2.h>
+//#include <Winsock2.h>
 
 extern char g_szDirectoryPath[300];
 

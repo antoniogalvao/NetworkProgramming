@@ -1,4 +1,6 @@
 #include <arpa/inet.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 #include "include/tcpstream.h"
 
 TCPStream::TCPStream(int sd, struct sockaddr_in* address): m_peerSocketDescriptor(sd)
@@ -16,12 +18,12 @@ TCPStream::~TCPStream()
 
 ssize_t TCPStream::sendMessage(const char* buffer, size_t lenght)
 {
-   return write(m_peerSocketDescriptor, buffer, lenght);
+   return send(m_peerSocketDescriptor, buffer, lenght, 0);
 }
 
 ssize_t TCPStream::receiveMessage(char* buffer, size_t length)
 {
-   return read(m_peerSocketDescriptor, buffer, length);
+   return recv(m_peerSocketDescriptor, buffer, length, 0);
 }
 
 int TCPStream::getPeerSocketDescriptor()

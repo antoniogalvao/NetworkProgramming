@@ -1,8 +1,4 @@
-#include "stdafx.h"
-#include ".\mailsession.h"
-
-#include "shlwapi.h"
-#pragma comment(lib,"shlwapi.lib")
+#include "include/MailSession.h"
 
 extern char g_szDomain[300];
 

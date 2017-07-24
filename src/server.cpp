@@ -58,6 +58,7 @@ public:
             strcat(serverResponseMessage, " - ");
             strcat(serverResponseMessage, line);
             stream->sendMessage(serverResponseMessage, length);
+
          }
          delete stream;
       }
@@ -81,7 +82,7 @@ int main(int argc, char** argv)
 
    if(argc != 4)
    {
-      printf("Usage: %s <ip> <port> <workers>\n", argv[0]);
+      printf("Usage: %s <ip> <port> <number-workers>\n", argv[0]);
       exit(1);
    }
 
@@ -128,7 +129,6 @@ int main(int argc, char** argv)
       else
          SecureServer::showCerts(ssl);        // get any certificate
 
-
       if(!connection){
          printf("Could not accept a connection\n");
          continue;
@@ -140,6 +140,7 @@ int main(int argc, char** argv)
          continue;
       }
       queue.add(item);
+      //echo server message for all clients
    }
 
 /*
